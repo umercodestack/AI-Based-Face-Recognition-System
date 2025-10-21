@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Based Face Recognition System</title>
+</head>
+<body>
+    <h1>Upload an image to detect faces</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Upload</button>
+    </form>
+    
+    <!-- Display results -->
+    <div id="result"></div>
+
+    <script>
+        // Handling the response from the server
+        const form = document.querySelector('form');
+        form.onsubmit = async function(event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+
+            if (result.error) {
+                document.getElementById("result").innerText = result.error;
+            } else {
+                document.getElementById("result").innerText = result.message;
+            }
+        }
+    </script>
+</body>
+</html>
